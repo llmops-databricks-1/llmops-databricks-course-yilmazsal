@@ -1,0 +1,6 @@
+dev:
+  catalog: gdas_dev_iaud
+  schema: policies
+  llm_endpoints: azure-openai
+  embedding_endpoint: databricks-gte-large-on
+  vector_search_endpoint: llmops_course_vs_endpoint

@@ -1,0 +1,23 @@
+resources:
+  jobs:
+    foundation_models_job:
+      name: foundation-models
+      tags:
+        project_name: "llmops_databricks"
+
+      environments:
+        - environment_key: default
+          spec:
+            environment_version: "4"
+            dependencies:
+              - ../dist/*.whl
+
+      tasks:
+        - task_key: run_notebook
+          environment_key: default
+          notebook_task:
+            notebook_path: ../notebooks/1_foundation_models.py
+            base_parameters:
+              env: ${bundle.target}
+              git_sha: "${var.git_sha}"
+              run_id: "{{job.run_id}}"
