@@ -1,7 +1,11 @@
 import yaml
+<<<<<<< HEAD
 from pydantic import BaseModel, Field
 from pyspark.dbutils import DBUtils
 from pyspark.sql import SparkSession
+=======
+from databricks.connect import DatabricksSession
+>>>>>>> 53e86ae (created chunks, vector search endpoint, index table  and search functions)
 
 
 class ProjectConfig(BaseModel):
@@ -11,6 +15,7 @@ class ProjectConfig(BaseModel):
         ..., description="Name of the catalog to use for this environment"
     )
     schema: str = Field(..., description="Name of the schema associated with the catalog")
+    volume: str = Field(..., description="Name of the Volume associated with the catalog")
     llm_endpoints: str = Field(..., description="Endpoint identifier for the LLM service")
     embedding_endpoint: str = Field(..., description="Endpoint for embedding generation")
     vector_search_endpoint: str = Field(
@@ -36,7 +41,7 @@ class ProjectConfig(BaseModel):
         return cls(**env_config)
 
 
-def get_env(spark: SparkSession) -> str:
+def get_env(spark: DatabricksSession) -> str:
     """Get current environment from dbutils widget.
     Returns:
         Environment name (dev, acc, dev)

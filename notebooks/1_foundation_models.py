@@ -19,9 +19,15 @@ for endpoint in endpoints:
     if endpoint.name and "databricks" in endpoint.name:
         logger.info(f"Name: {endpoint.name}")
         logger.info(f"State: {endpoint.state}")
+<<<<<<< HEAD
         logger.info("-" * 80)
 
 
+=======
+        logger.info("-"*80)
+        
+        
+>>>>>>> 53e86ae (created chunks, vector search endpoint, index table  and search functions)
 # COMMAND ----------
 
 
@@ -60,4 +66,23 @@ logger.info(response.choices[0].message.content)
 logger.info(f"Tokens used: {response.usage.total_tokens}")
 logger.info(f"Input tokens{response.usage.prompt_tokens}")
 logger.info(f"Tokens outpout: {response.usage.completion_tokens}")
+<<<<<<< HEAD
 #
+=======
+# 
+# COMMAND ----------
+import arxiv
+
+search = arxiv.Search(
+    query="machine learning",
+    max_results=5,
+    sort_by=arxiv.SortCriterion.SubmittedDate
+)
+
+for result in search.results():
+    print(result.title)
+    print(result.entry_id)
+    print(result.published)
+    print("-" * 50)
+# COMMAND ----------
+>>>>>>> 53e86ae (created chunks, vector search endpoint, index table  and search functions)
