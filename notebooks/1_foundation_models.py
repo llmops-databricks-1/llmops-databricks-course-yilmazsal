@@ -20,7 +20,6 @@ for endpoint in endpoints:
         logger.info("-"*80)
         
         
-
 # COMMAND ----------
 
 import subprocess, json, openai
@@ -55,3 +54,18 @@ logger.info(f"Tokens used: {response.usage.total_tokens}")
 logger.info(f"Input tokens{response.usage.prompt_tokens}")
 logger.info(f"Tokens outpout: {response.usage.completion_tokens}")
 # 
+# COMMAND ----------
+import arxiv
+
+search = arxiv.Search(
+    query="machine learning",
+    max_results=5,
+    sort_by=arxiv.SortCriterion.SubmittedDate
+)
+
+for result in search.results():
+    print(result.title)
+    print(result.entry_id)
+    print(result.published)
+    print("-" * 50)
+# COMMAND ----------

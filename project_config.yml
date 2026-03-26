@@ -1,6 +1,7 @@
 dev:
-  catalog: gdas_dev_iaud
-  schema: policies
-  llm_endpoints: azure-openai
-  embedding_endpoint: databricks-gte-large-on
+  catalog: mlops_dev
+  schema: yilmazfs
+  volume: arxiv_files
+  llm_endpoints: databricks-llama-4-maverick
+  embedding_endpoint: databricks-gte-large-en
   vector_search_endpoint: llmops_course_vs_endpoint
