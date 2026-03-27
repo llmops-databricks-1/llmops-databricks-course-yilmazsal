@@ -70,8 +70,8 @@ schema = cfg.schema
 # MAGIC | **e5-large-v2** | 1024 | 512 | Open source, good quality |
 # MAGIC | **all-MiniLM-L6-v2** | 384 | 512 | Fast, smaller, lower quality |
 # MAGIC
-# MAGIC **For this course, we'll use `databricks-gte-large-en`** - it's fast, high-quality,
-# MAGIC and free on Databricks.
+# MAGIC **For this course, we'll use `databricks-gte-large-en`** - it's fast,
+# MAGIC high-quality, and free on Databricks.
 
 # COMMAND ----------
 
