@@ -1,5 +1,6 @@
 import yaml
 from databricks.connect import DatabricksSession
+from databricks.sdk.runtime import DBUtils
 from pydantic import BaseModel, Field
 
 

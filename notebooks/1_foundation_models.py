@@ -3,6 +3,7 @@
 import json
 import subprocess
 
+import arxiv
 import openai
 from databricks.sdk import WorkspaceClient
 from loguru import logger
@@ -60,8 +61,6 @@ logger.info(f"Input tokens{response.usage.prompt_tokens}")
 logger.info(f"Tokens outpout: {response.usage.completion_tokens}")
 #
 # COMMAND ----------
-import arxiv
-
 search = arxiv.Search(
     query="machine learning", max_results=5, sort_by=arxiv.SortCriterion.SubmittedDate
 )

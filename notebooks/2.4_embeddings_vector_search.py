@@ -34,7 +34,7 @@ schema = cfg.schema
 # MAGIC %md
 # MAGIC ## 1. Understanding Embeddings
 # MAGIC
-# MAGIC **Embeddings** are numerical representations of text that capture semantic meaning.
+# MAGIC **Embeddings** are numerical representations of text that capture semantic meaning
 # MAGIC
 # MAGIC ### Key Concepts:
 # MAGIC
@@ -68,7 +68,8 @@ schema = cfg.schema
 # MAGIC | **e5-large-v2** | 1024 | 512 | Open source, good quality |
 # MAGIC | **all-MiniLM-L6-v2** | 384 | 512 | Fast, smaller, lower quality |
 # MAGIC
-# MAGIC **For this course, we'll use `databricks-gte-large-en`** - it's fast, high-quality, and free on Databricks.
+# MAGIC **For this course, we'll use `databricks-gte-large-en`** - it's fast, high-quality,
+# MAGIC and free on Databricks.
 
 # COMMAND ----------
 
@@ -191,7 +192,7 @@ def parse_vector_search_results(results):
     columns = [col["name"] for col in results.get("manifest", {}).get("columns", [])]
     data_array = results.get("result", {}).get("data_array", [])
 
-    return [dict(zip(columns, row_data)) for row_data in data_array]
+    return [dict(zip(columns, row_data, strict=True)) for row_data in data_array]
 
 
 # COMMAND ----------
@@ -202,7 +203,8 @@ def parse_vector_search_results(results):
 # MAGIC ### How Semantic Search Works
 # MAGIC
 # MAGIC 1. **Query Embedding**: Convert your search query to a vector
-# MAGIC 2. **Similarity Calculation**: Compare query vector to all document vectors using **cosine similarity**
+# MAGIC 2. **Similarity Calculation**: Compare query vector to all document
+# MAGIC    vectors using **cosine similarity**
 # MAGIC 3. **Ranking**: Return documents with highest similarity scores
 # MAGIC
 # MAGIC ### Cosine Similarity
