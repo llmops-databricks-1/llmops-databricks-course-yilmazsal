@@ -8,9 +8,13 @@ from databricks.sdk import WorkspaceClient
 from loguru import logger
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 # COMMAND ----------
 =======
 >>>>>>> d486143 (fixed formatting)
+=======
+# COMMAND ----------
+>>>>>>> cb52feb (fixed formatting)
 w = WorkspaceClient()
 #
 # COMMAND ----------
@@ -39,6 +43,7 @@ for endpoint in endpoints:
 
 
 # COMMAND ----------
+<<<<<<< HEAD
 
 import json
 import subprocess
@@ -46,6 +51,8 @@ import subprocess
 import openai
 >>>>>>> d486143 (fixed formatting)
 
+=======
+>>>>>>> cb52feb (fixed formatting)
 host = w.config.host
 
 result = subprocess.run(

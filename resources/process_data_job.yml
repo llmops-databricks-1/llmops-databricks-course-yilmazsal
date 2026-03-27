@@ -23,4 +23,3 @@ resources:
             notebook_path: deployment_scripts/process_data.py
             base_parameters:
               env: ${bundle.target}
-
