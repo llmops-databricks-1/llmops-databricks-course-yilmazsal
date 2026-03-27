@@ -1,13 +1,15 @@
+from typing import Literal, TypedDict
 
-from typing import TypedDict, Literal
 
 class ChatMessage(TypedDict):
     role: Literal["system", "user", "assistant"]
     content: str
 
-def _msg(role:Literal["system", "user", "assistant"], content:str) -> ChatMessage:
+
+def _msg(role: Literal["system", "user", "assistant"], content: str) -> ChatMessage:
     """Helper function to format messages."""
-    return {"role":role, "content":content}
+    return {"role": role, "content": content}
+
 
 def system(content: str) -> ChatMessage:
     """Format a system message."""

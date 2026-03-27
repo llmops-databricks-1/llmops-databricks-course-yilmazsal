@@ -1,15 +1,14 @@
 # Databricks notebook source
 # COMMAND ----------
+
 from loguru import logger
-from databricks.connect import DatabricksSession
+from pyspark.sql import SparkSession
+
 from llmops_databricks.config import ProjectConfig, get_env
 from llmops_databricks.data_processor import DataProcessor
-from pyspark.sql import SparkSession
-import arxiv
-from pathlib import Path
 
 # COMMAND ----------
-#spark = DatabricksSession.builder.getOrCreate()
+# spark = DatabricksSession.builder.getOrCreate()
 spark = SparkSession.builder.getOrCreate()
 logger.info("Using Databricks Connect Spark Session")
 
@@ -19,7 +18,7 @@ cfg = ProjectConfig.from_yaml(config_path="../project_config.yml", env=env)
 logger.info(cfg)
 
 # COMMAND ----------
-processor = DataProcessor(spark = spark,  config = cfg)
+processor = DataProcessor(spark=spark, config=cfg)
 
 # COMMAND ----------
 # start = processor._get_range_start()
@@ -45,12 +44,12 @@ processor = DataProcessor(spark = spark,  config = cfg)
 #     except Exception as e:
 #         logger.warning(
 #             f"Paper {paper_id} failed:{str(e)}"
-#         )   
+#         )
 # COMMAND ----------
-#processor.download_and_store_papers()
+# processor.download_and_store_papers()
 # COMMAND ----------
 
-#processor.parse_pdfs_with_ai()
+# processor.parse_pdfs_with_ai()
 
 # COMMAND ----------
 processor.process_and_save()

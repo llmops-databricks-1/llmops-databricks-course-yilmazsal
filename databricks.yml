@@ -14,7 +14,7 @@ variables:
   schedule_pause_status:
     description: schedule pause status
     default: PAUSED
-  
+
 
 artifacts:
   default:
