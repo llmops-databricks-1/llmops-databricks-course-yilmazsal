@@ -1,8 +1,13 @@
 # Databricks notebook source
 # COMMAND ----------
+import json
+import subprocess
+
+import openai
 from databricks.sdk import WorkspaceClient
 from loguru import logger
 
+# COMMAND ----------
 w = WorkspaceClient()
 #
 # COMMAND ----------
@@ -18,12 +23,6 @@ for endpoint in endpoints:
 
 
 # COMMAND ----------
-
-import json
-import subprocess
-
-import openai
-
 host = w.config.host
 
 result = subprocess.run(
