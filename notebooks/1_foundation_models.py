@@ -7,7 +7,10 @@ import openai
 from databricks.sdk import WorkspaceClient
 from loguru import logger
 
+<<<<<<< HEAD
 # COMMAND ----------
+=======
+>>>>>>> d486143 (fixed formatting)
 w = WorkspaceClient()
 #
 # COMMAND ----------
@@ -20,6 +23,7 @@ for endpoint in endpoints:
         logger.info(f"Name: {endpoint.name}")
         logger.info(f"State: {endpoint.state}")
 <<<<<<< HEAD
+<<<<<<< HEAD
         logger.info("-" * 80)
 
 
@@ -30,6 +34,17 @@ for endpoint in endpoints:
 >>>>>>> 53e86ae (created chunks, vector search endpoint, index table  and search functions)
 # COMMAND ----------
 
+=======
+        logger.info("-" * 80)
+
+
+# COMMAND ----------
+
+import json
+import subprocess
+
+import openai
+>>>>>>> d486143 (fixed formatting)
 
 host = w.config.host
 
@@ -67,16 +82,18 @@ logger.info(f"Tokens used: {response.usage.total_tokens}")
 logger.info(f"Input tokens{response.usage.prompt_tokens}")
 logger.info(f"Tokens outpout: {response.usage.completion_tokens}")
 <<<<<<< HEAD
+<<<<<<< HEAD
 #
 =======
 # 
+=======
+#
+>>>>>>> d486143 (fixed formatting)
 # COMMAND ----------
 import arxiv
 
 search = arxiv.Search(
-    query="machine learning",
-    max_results=5,
-    sort_by=arxiv.SortCriterion.SubmittedDate
+    query="machine learning", max_results=5, sort_by=arxiv.SortCriterion.SubmittedDate
 )
 
 for result in search.results():

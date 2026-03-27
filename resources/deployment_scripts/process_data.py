@@ -11,15 +11,16 @@
 # MAGIC 3. Extract and clean chunks
 # MAGIC 4. Sync vector search index
 # COMMAND ----------
-from llmops_databricks.config import ProjectConfig, get_env
+from loguru import logger
 from pyspark.sql import SparkSession
+
+from llmops_databricks.config import ProjectConfig, get_env
 from llmops_databricks.data_processor import DataProcessor
 from llmops_databricks.vector_search import VectorSearchManager
-from loguru import logger
 
 spark = SparkSession.builder.getOrCreate()
 env = get_env(spark)
-cfg = ProjectConfig.from_yaml("../../project_config.yml", env = env)
+cfg = ProjectConfig.from_yaml("../../project_config.yml", env=env)
 
 logger.info("Configuration loaded:")
 logger.info(f"  Environment: {env}")
@@ -30,16 +31,16 @@ logger.info(f"  Schema: {cfg.schema}")
 # MAGIC %md
 # MAGIC ## Step 1: Process New Papers
 # COMMAND ----------
-processor = DataProcessor(spark = spark, config = cfg)
+processor = DataProcessor(spark=spark, config=cfg)
 processor.process_and_save()
 
 
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ## Step 2: Sync Vector Search Index; 
+# MAGIC ## Step 2: Sync Vector Search Index;
 # COMMAND ----------
-vs_manager = VectorSearchManager(config = cfg)
+vs_manager = VectorSearchManager(config=cfg)
 vs_manager.sync_index()
 
 logger.info("Data processing pipeline complete!")

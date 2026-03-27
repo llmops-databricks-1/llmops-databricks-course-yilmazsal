@@ -5,7 +5,11 @@ from pyspark.dbutils import DBUtils
 from pyspark.sql import SparkSession
 =======
 from databricks.connect import DatabricksSession
+<<<<<<< HEAD
 >>>>>>> 53e86ae (created chunks, vector search endpoint, index table  and search functions)
+=======
+from pydantic import BaseModel, Field
+>>>>>>> d486143 (fixed formatting)
 
 
 class ProjectConfig(BaseModel):
