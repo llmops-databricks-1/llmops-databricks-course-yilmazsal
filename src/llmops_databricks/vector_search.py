@@ -20,8 +20,8 @@ class VectorSearchManager:
             
         """
         self.config = config
-        self.endpoint_name = endpoint_name
-        self.embedding_model = embedding_model
+        self.endpoint_name = endpoint_name or config.vector_search_endpoint
+        self.embedding_model = embedding_model or config.embedding_endpoint
         self.catalog = config.catalog
         self.schema = config.schema
         self.client = VectorSearchClient()

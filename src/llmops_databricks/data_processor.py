@@ -111,7 +111,7 @@ class DataProcessor:
         papers = client.results(search)
  
         records = [] #collects metadata
-        for paper in papers:
+        for _, paper in enumerate(papers):
             
             paper_id = paper.get_short_id()
             print(paper_id)
@@ -138,8 +138,8 @@ class DataProcessor:
                         "volume_path": f"{self.pdf_dir}/{paper_id}.pdf",
                     }
                 )
-      
-                break
+                if _%3 == 0:
+                    break
             except Exception as e:
                 logger.warning(
                     f"Paper {paper_id} failed:{str(e)}"
