@@ -12,6 +12,8 @@
 
 # COMMAND ----------
 
+from typing import Any
+
 from databricks.vector_search.reranker import DatabricksReranker
 from loguru import logger
 from pyspark.sql import SparkSession
@@ -180,7 +182,7 @@ logger.info(f"  Embedding Model: {vs_manager.embedding_model}")
 # COMMAND ----------
 
 
-def parse_vector_search_results(results):
+def parse_vector_search_results(results: dict) -> list[dict[str, Any]]:
     """Parse vector search results from array format to dict format.
 
     Args:
