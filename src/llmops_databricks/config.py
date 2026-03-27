@@ -1,5 +1,10 @@
 import yaml
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+from databricks.connect import DatabricksSession
+from databricks.sdk.runtime import DBUtils
+>>>>>>> d4334e6 (fixed formatting)
 from pydantic import BaseModel, Field
 from pyspark.dbutils import DBUtils
 from pyspark.sql import SparkSession
