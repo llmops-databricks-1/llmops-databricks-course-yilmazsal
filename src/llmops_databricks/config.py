@@ -4,6 +4,7 @@ import yaml
 =======
 from databricks.connect import DatabricksSession
 <<<<<<< HEAD
+<<<<<<< HEAD
 from databricks.sdk.runtime import DBUtils
 >>>>>>> d4334e6 (fixed formatting)
 =======
@@ -19,6 +20,10 @@ from databricks.connect import DatabricksSession
 =======
 from pydantic import BaseModel, Field
 >>>>>>> d486143 (fixed formatting)
+=======
+from pydantic import BaseModel, Field
+from pyspark.dbutils import DBUtils
+>>>>>>> 37dde7c (fixed format)
 
 
 class ProjectConfig(BaseModel):
