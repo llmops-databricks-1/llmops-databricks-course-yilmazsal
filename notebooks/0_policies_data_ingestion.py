@@ -1,24 +1,18 @@
 # Databricks notebook source
-from loguru import logger
-import yaml
-import sys
-from pyspark.sql import SparkSession
-import pandas as pd
-import pathlib as Path
-from llmops_databricks.config import ProjectConfig
-from llmops_databricks.message_formatters import system, user, assistant
-from llmops_databricks.config import get_env
-from dotenv import load_dotenv
-from openai import AzureOpenAI
-#from azure.ai.documentintelligence.models import ParagraphRole
-import json
+# from azure.ai.documentintelligence.models import ParagraphRole
 import os
 
+import pandas as pd
+from loguru import logger
+from pyspark.sql import SparkSession
+
+from llmops_databricks.config import ProjectConfig, get_env
+
 # COMMAND ----------
-#create Spark session
+# create Spark session
 spark = SparkSession.builder.getOrCreate()
 
-#load config
+# load config
 env = get_env(spark)
 cfg = ProjectConfig.from_yaml(config_path="../project_config.yml", env=env)
 
@@ -26,7 +20,7 @@ CATALOG = cfg.catalog
 SCHEMA = cfg.schema
 TABLE_NAME = "policy_docs"
 
-#Create schema 
+# Create schema
 spark.sql(f"CREATE SCHEMA IF NOT EXISTS {CATALOG}.{SCHEMA}")
 logger.info(f"Schema {CATALOG}.{SCHEMA} ready")
 
@@ -41,7 +35,9 @@ key = os.environ["AZURE_DOCUMENT_INTELLIGENCE_KEY"]
 
 pdf_path = "../data/IN_HM Group Customer Privacy Notice.pdf"
 
-di_client = DocumentIntelligenceClient(endpoint=endpoint, credential=AzureKeyCredential(key))
+di_client = DocumentIntelligenceClient(
+    endpoint=endpoint, credential=AzureKeyCredential(key)
+)
 
 with open(pdf_path, "rb") as f:
     poller = di_client.begin_analyze_document("prebuilt-layout", body=f)
@@ -50,7 +46,9 @@ result = poller.result()
 
 paragraph_count = len(result.paragraphs or [])
 table_count = len(result.tables or [])
-logger.info(f"Document analysis complete: {paragraph_count} paragraphs, {table_count} tables")
+logger.info(
+    f"Document analysis complete: {paragraph_count} paragraphs, {table_count} tables"
+)
 
 # COMMAND ----------
 
@@ -94,7 +92,9 @@ pdf_df["ingestion_ts"] = pd.Timestamp.utcnow()
 pdf_df["page_numbers"] = pdf_df["page_numbers"].apply(list)
 
 spark_df = spark.createDataFrame(pdf_df)
-spark_df.write.format("delta").mode("overwrite").saveAsTable(f"{CATALOG}.{SCHEMA}.{TABLE_NAME}")
+spark_df.write.format("delta").mode("overwrite").saveAsTable(
+    f"{CATALOG}.{SCHEMA}.{TABLE_NAME}"
+)
 logger.info(f"Wrote {len(chunks)} chunks to {CATALOG}.{SCHEMA}.{TABLE_NAME}")
 
 # COMMAND ----------
@@ -121,8 +121,12 @@ LIMIT 3
 """).show(truncate=False)
 
 stats = agg.collect()[0]
-assert stats["empty_content"] == 0, f"Found {stats['empty_content']} chunk(s) with empty content"
-assert stats["max_chars"] <= 3000, f"Largest chunk ({stats['max_chars']} chars) exceeds 3000-char limit"
+assert stats["empty_content"] == 0, (
+    f"Found {stats['empty_content']} chunk(s) with empty content"
+)
+assert stats["max_chars"] <= 3000, (
+    f"Largest chunk ({stats['max_chars']} chars) exceeds 3000-char limit"
+)
 logger.info(
     f"Validation passed: {stats['total_chunks']} chunks, "
     f"{stats['distinct_sections']} sections, "

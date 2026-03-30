@@ -13,7 +13,7 @@ OVERLAP_PARAGRAPHS = 1
 NOISE_ROLES = frozenset({"pageHeader", "pageFooter", "pageNumber"})
 
 
-class DocumentChunk(BaseModel) -> None:
+class DocumentChunk(BaseModel):
     chunk_id: str
     source_file: str
     document_title: str
@@ -119,7 +119,7 @@ def chunk_analyze_result(
     source_file: str,
     max_chunk_chars: int = MAX_CHUNK_CHARS,
     overlap_paragraphs: int = OVERLAP_PARAGRAPHS,
-)-> list[DocumentChunk]:
+) -> list[DocumentChunk]:
     """Walk AnalyzeResult paragraphs, group by section heading, split on overflow."""
     all_paragraphs = list(result.paragraphs or [])
     document_title = _extract_document_title(all_paragraphs)
