@@ -3,6 +3,7 @@ from __future__ import annotations
 import uuid
 from typing import TYPE_CHECKING
 
+from azure.ai.documentintelligence.models import DocumentParagraph
 from pydantic import BaseModel, model_validator
 
 if TYPE_CHECKING:
@@ -30,12 +31,12 @@ class DocumentChunk(BaseModel):
         return self
 
 
-def _is_noise(paragraph) -> bool:
+def _is_noise(paragraph: DocumentParagraph) -> bool:
     role = getattr(paragraph, "role", None)
     return role in NOISE_ROLES
 
 
-def _get_page_numbers(paragraph) -> list[int]:
+def _get_page_numbers(paragraph: DocumentParagraph) -> list[int]:
     pages: set[int] = set()
     regions = getattr(paragraph, "bounding_regions", None) or []
     for region in regions:
@@ -45,7 +46,7 @@ def _get_page_numbers(paragraph) -> list[int]:
     return sorted(pages)
 
 
-def _extract_document_title(paragraphs) -> str:
+def _extract_document_title(paragraphs: list[DocumentParagraph]) -> str:
     for p in paragraphs:
         if getattr(p, "role", None) == "title":
             print(p)
