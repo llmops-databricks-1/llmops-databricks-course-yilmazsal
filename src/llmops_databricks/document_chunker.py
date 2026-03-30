@@ -6,7 +6,7 @@ from typing import TYPE_CHECKING
 from pydantic import BaseModel, model_validator
 
 if TYPE_CHECKING:
-    from azure.ai.documentintelligence.models import AnalyzeResult
+    pass
 
 MAX_CHUNK_CHARS = 2000
 OVERLAP_PARAGRAPHS = 1
@@ -25,7 +25,7 @@ class DocumentChunk(BaseModel):
     paragraph_count: int = 0
 
     @model_validator(mode="after")
-    def _derive_counts(self) -> "DocumentChunk":
+    def _derive_counts(self) -> DocumentChunk:
         self.char_count = len(self.content)
         return self
 
@@ -119,11 +119,11 @@ def chunk_analyze_result(
     source_file: str,
     max_chunk_chars: int = MAX_CHUNK_CHARS,
     overlap_paragraphs: int = OVERLAP_PARAGRAPHS,
-) :#-> list[DocumentChunk]:
+):  # -> list[DocumentChunk]:
     """Walk AnalyzeResult paragraphs, group by section heading, split on overflow."""
     all_paragraphs = list(result.paragraphs or [])
     document_title = _extract_document_title(all_paragraphs)
-    
+
     current_heading = "Preamble"
     buffer: list = []
     chunks: list[DocumentChunk] = []
