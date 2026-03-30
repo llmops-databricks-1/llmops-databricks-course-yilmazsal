@@ -1,13 +1,16 @@
 # Databricks notebook source
 # from azure.ai.documentintelligence.models import ParagraphRole
 import os
+
 import pandas as pd
-from loguru import logger
-from pyspark.sql import SparkSession
-from llmops_databricks.config import ProjectConfig, get_env
-from llmops_databricks.document_chunker import chunk_analyze_result
 from azure.ai.documentintelligence import DocumentIntelligenceClient
 from azure.core.credentials import AzureKeyCredential
+from loguru import logger
+from pyspark.sql import SparkSession
+
+from llmops_databricks.config import ProjectConfig, get_env
+from llmops_databricks.document_chunker import chunk_analyze_result
+
 # COMMAND ----------
 # create Spark session
 spark = SparkSession.builder.getOrCreate()
