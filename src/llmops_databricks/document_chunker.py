@@ -3,6 +3,7 @@ from __future__ import annotations
 import uuid
 from typing import TYPE_CHECKING
 
+from azure.ai.documentintelligence import AnalyzeResult
 from azure.ai.documentintelligence.models import DocumentParagraph
 from pydantic import BaseModel, model_validator
 
@@ -116,7 +117,7 @@ def _split_paragraph_buffer(
 
 
 def chunk_analyze_result(
-    result,
+    result: AnalyzeResult,
     source_file: str,
     max_chunk_chars: int = MAX_CHUNK_CHARS,
     overlap_paragraphs: int = OVERLAP_PARAGRAPHS,
