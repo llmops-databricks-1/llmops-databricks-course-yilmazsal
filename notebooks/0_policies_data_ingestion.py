@@ -1,13 +1,13 @@
 # Databricks notebook source
 # from azure.ai.documentintelligence.models import ParagraphRole
 import os
-
 import pandas as pd
 from loguru import logger
 from pyspark.sql import SparkSession
-
 from llmops_databricks.config import ProjectConfig, get_env
-
+from llmops_databricks.document_chunker import chunk_analyze_result
+from azure.ai.documentintelligence import DocumentIntelligenceClient
+from azure.core.credentials import AzureKeyCredential
 # COMMAND ----------
 # create Spark session
 spark = SparkSession.builder.getOrCreate()
@@ -27,8 +27,6 @@ logger.info(f"Schema {CATALOG}.{SCHEMA} ready")
 # COMMAND ----------
 
 # Block 3 — Analyze PDF with Azure Document Intelligence
-from azure.ai.documentintelligence import DocumentIntelligenceClient
-from azure.core.credentials import AzureKeyCredential
 
 endpoint = os.environ["AZURE_DOCUMENT_INTELLIGENCE_ENDPOINT"]
 key = os.environ["AZURE_DOCUMENT_INTELLIGENCE_KEY"]
@@ -53,8 +51,6 @@ logger.info(
 # COMMAND ----------
 
 # Block 4 — Chunk the document
-from llmops_databricks.document_chunker import chunk_analyze_result
-
 source_file = "IN_HM Group Customer Privacy Notice.pdf"
 chunks = chunk_analyze_result(result, source_file=source_file)
 
