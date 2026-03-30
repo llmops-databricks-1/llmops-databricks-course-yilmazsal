@@ -113,7 +113,8 @@ agg.show()
 
 logger.info("Spot-check: first 3 chunks (200-char preview)")
 spark.sql(f"""
-SELECT chunk_index, section_heading, page_numbers, SUBSTRING(content, 1, 200) AS content_preview
+SELECT chunk_index, section_heading, page_numbers, 
+          SUBSTRING(content, 1, 200) AS content_preview
 FROM {CATALOG}.{SCHEMA}.{TABLE_NAME}
 ORDER BY chunk_index
 LIMIT 3
