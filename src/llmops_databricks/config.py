@@ -12,11 +12,18 @@ class ProjectConfig(BaseModel):
     )
     schema: str = Field(..., description="Name of the schema associated with the catalog")
     volume: str = Field(..., description="Name of the Volume associated with the catalog")
-    llm_endpoints: str = Field(..., description="Endpoint identifier for the LLM service")
+    llm_endpoint: str = Field(..., description="Endpoint identifier for the LLM service")
     embedding_endpoint: str = Field(..., description="Endpoint for embedding generation")
     vector_search_endpoint: str = Field(
         ..., description="Endpoint for vector search service"
     )
+    warehouse_id: str = Field(..., description="Warehouse ID")
+    genie_space_id: str | None = Field(
+        None, description="Genie space ID for MCP integration"
+    )
+    usage_policy_id: str | None = Field(..., description="Usage policy id")
+    lakebase_project_id: str = Field(..., description="Lakebase project id")
+    experiment_name: str = Field(None, description="Experiment name")
 
     @classmethod
     def from_yaml(cls, config_path: str, env: str = "dev") -> "ProjectConfig":

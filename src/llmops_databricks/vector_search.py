@@ -26,7 +26,7 @@ class VectorSearchManager:
         self.catalog = config.catalog
         self.schema = config.schema
         self.client = VectorSearchClient()
-        self.index_name = f"{self.catalog}.{self.schema}.arxiv_index"
+        self.index_name = f"{self.catalog}.{self.schema}.arxiv_vector_index"
 
     def create_endpoint_if_not_exists(self) -> None:
         endpoints_response = self.client.list_endpoints()
