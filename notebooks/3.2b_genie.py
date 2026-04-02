@@ -15,13 +15,15 @@
 # MAGIC - Can be integrated with agents via MCP
 
 # COMMAND ----------
-from pyspark.sql import SparkSession
-from llmops_databricks.config import ProjectConfig, get_env
 import json
+
 from databricks.sdk import WorkspaceClient
 from databricks.sdk.service import sql
 from databricks.sdk.service.sql import CreateWarehouseRequestWarehouseType
 from loguru import logger
+from pyspark.sql import SparkSession
+
+from llmops_databricks.config import ProjectConfig, get_env
 
 spark = SparkSession.builder.getOrCreate()
 

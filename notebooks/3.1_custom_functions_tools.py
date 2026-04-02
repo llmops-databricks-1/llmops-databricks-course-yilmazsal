@@ -46,6 +46,7 @@
 # COMMAND ----------
 
 import json
+from typing import Any
 
 from databricks.sdk import WorkspaceClient
 from databricks.vector_search.client import VectorSearchClient
@@ -54,7 +55,7 @@ from pyspark.sql import SparkSession
 
 from llmops_databricks.config import ProjectConfig, get_env
 from llmops_databricks.mcp import ToolInfo
-from typing import List, Any
+
 # COMMAND ----------
 spark = SparkSession.builder.getOrCreate()
 
@@ -172,7 +173,7 @@ logger.info(json.dumps(calculator_tool_spec, indent=2))
 
 
 # Helper function to parse vector search results
-def parse_vector_search_results(results: List[dict]) -> List[dict]:
+def parse_vector_search_results(results: list[dict]) -> list[dict]:
     """Parse vector search results from array format to dict format.
 
     Args:
@@ -360,7 +361,6 @@ logger.info(f"3. {counting_words_tool.name}")
 # MAGIC ## 6. Tool Registry Pattern
 
 # COMMAND ----------
-from typing import Any
 
 
 class ToolRegistry:
