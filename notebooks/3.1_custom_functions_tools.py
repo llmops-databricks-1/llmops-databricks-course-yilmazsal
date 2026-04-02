@@ -650,13 +650,15 @@ from openai import OpenAI
 # Create agent with our tools
 agent = SimpleAgent(
     llm_endpoint=cfg.llm_endpoint,
-    system_prompt="You are a helpful assistant. Use the available tools to answer questions.",
+    system_prompt="You are a helpful assistant. Use the available tools to answer \
+        questions.",
     tools=[calculator_tool, search_papers_tool],
 )
 
 # agent = SimpleAgent(
 # llm_endpoint=cfg.llm_endpoint,
-# system_prompt="You are a helpful assistant. Use the available tools to answer questions.",
+# system_prompt="You are a helpful assistant. Use the available tools to answer\
+#  questions.",
 # tools=registry.get_all_tools())
 
 logger.info("✓ Agent created with tools:")
