@@ -42,8 +42,8 @@ w = WorkspaceClient()
 # MAGIC %md
 # MAGIC ## 1. What is Model Context Protocol (MCP)?
 # MAGIC
-# MAGIC **MCP** is a standardized protocol for connecting AI models to external data sources
-# MAGIC  and tools.
+# MAGIC **MCP** is a standardized protocol for connecting AI models to external 
+# MAGIC  data sources and tools.
 # MAGIC
 # MAGIC ### Key Concepts:
 # MAGIC
@@ -448,7 +448,7 @@ class SimpleAgent:
 # Create agent with MCP tools
 agent = SimpleAgent(
     llm_endpoint=cfg.llm_endpoint,
-    system_prompt="You are a helpful research assistant. Use the available tools to search "
+    system_prompt="You are a helpful research assistant.Use the available tools to search"
     "for papers and answer questions.",
     tools=mcp_tools,
 )
