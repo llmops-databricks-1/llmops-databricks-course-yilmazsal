@@ -8,18 +8,13 @@ import openai
 from databricks.sdk import WorkspaceClient
 from loguru import logger
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
+
 # COMMAND ----------
-=======
->>>>>>> d486143 (fixed formatting)
-=======
+
 # COMMAND ----------
->>>>>>> cb52feb (fixed formatting)
-=======
+
 # COMMAND ----------
->>>>>>> 37dde7ce6e693a3cc7924d1ecbab61408ec235b7
+
 w = WorkspaceClient()
 #
 # COMMAND ----------
@@ -31,41 +26,25 @@ for endpoint in endpoints:
     if endpoint.name and "databricks" in endpoint.name:
         logger.info(f"Name: {endpoint.name}")
         logger.info(f"State: {endpoint.state}")
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-        logger.info("-" * 80)
-=======
+
         logger.info("-" * 80)
 
->>>>>>> 37dde7ce6e693a3cc7924d1ecbab61408ec235b7
 
 
-=======
-        logger.info("-"*80)
 
 
->>>>>>> 53e86ae (created chunks, vector search endpoint, index table  and search functions)
-# COMMAND ----------
-<<<<<<< HEAD
 
-=======
-        logger.info("-" * 80)
+
 
 
 # COMMAND ----------
-<<<<<<< HEAD
+
 
 import json
 import subprocess
 
 import openai
->>>>>>> d486143 (fixed formatting)
 
-=======
->>>>>>> cb52feb (fixed formatting)
-=======
->>>>>>> 37dde7ce6e693a3cc7924d1ecbab61408ec235b7
 host = w.config.host
 
 result = subprocess.run(
@@ -101,18 +80,7 @@ logger.info(response.choices[0].message.content)
 logger.info(f"Tokens used: {response.usage.total_tokens}")
 logger.info(f"Input tokens{response.usage.prompt_tokens}")
 logger.info(f"Tokens outpout: {response.usage.completion_tokens}")
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-#
-=======
-#
-=======
-#
->>>>>>> d486143 (fixed formatting)
-=======
-#
->>>>>>> 37dde7ce6e693a3cc7924d1ecbab61408ec235b7
+
 # COMMAND ----------
 search = arxiv.Search(
     query="machine learning", max_results=5, sort_by=arxiv.SortCriterion.SubmittedDate
@@ -124,7 +92,4 @@ for result in search.results():
     print(result.published)
     print("-" * 50)
 # COMMAND ----------
-<<<<<<< HEAD
->>>>>>> 53e86ae (created chunks, vector search endpoint, index table  and search functions)
-=======
->>>>>>> 37dde7ce6e693a3cc7924d1ecbab61408ec235b7
+
