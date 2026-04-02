@@ -435,8 +435,8 @@ word_count_result = registry.execute(
                 "arxiv_id": "2603.29522v1",
                 "authors": "Steven Y. Feng, Alvin W. M. Tan, Michael C. Frank",
                 "year": 2026.0,
-                "excerpt": "The flan collection: designing data and methods for effective \
-                    i...",
+                "excerpt": "The flan collection: designing data and methods for \
+                    effective i...",
             },
             {
                 "title": "MIND: Multi-agent inference for negotiation dialogue in travel \
