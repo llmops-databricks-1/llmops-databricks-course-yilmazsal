@@ -5,7 +5,7 @@ from collections.abc import Callable
 from databricks.sdk import WorkspaceClient
 from databricks_mcp import DatabricksMCPClient
 from pydantic import BaseModel
-
+from typing import Any
 
 class ToolInfo(BaseModel):
     """Tool information for agent integration.
@@ -38,7 +38,7 @@ def create_managed_exec_fn(
         Callable that executes the tool
     """
 
-    def exec_fn(**kwargs):
+    def exec_fn(**kwargs: Any) -> str:
         client = DatabricksMCPClient(server_url=server_url, workspace_client=w)
         response = client.call_tool(tool_name, kwargs)
         return "".join([c.text for c in response.content])
