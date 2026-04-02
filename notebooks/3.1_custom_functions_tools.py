@@ -54,7 +54,7 @@ from pyspark.sql import SparkSession
 
 from llmops_databricks.config import ProjectConfig, get_env
 from llmops_databricks.mcp import ToolInfo
-
+from typing import List, Any
 # COMMAND ----------
 spark = SparkSession.builder.getOrCreate()
 
@@ -142,7 +142,8 @@ calculator_tool_spec = {
     "type": "function",
     "function": {
         "name": "calculator",
-        "description": "Perform basic arithmetic operations (add, subtract, multiply, divide)",
+        "description": "Perform basic arithmetic operations \
+            (add, subtract, multiply, divide)",
         "parameters": {
             "type": "object",
             "properties": {
@@ -171,7 +172,7 @@ logger.info(json.dumps(calculator_tool_spec, indent=2))
 
 
 # Helper function to parse vector search results
-def parse_vector_search_results(results):
+def parse_vector_search_results(results: List[dict]) -> List[dict]:
     """Parse vector search results from array format to dict format.
 
     Args:
@@ -250,7 +251,8 @@ search_papers_tool_spec = {
     "type": "function",
     "function": {
         "name": "search_papers",
-        "description": """Search for academic papers using semantic search. Returns relevant
+        "description": """Search for academic papers using semantic search. \
+            Returns relevant
                    papers with titles, authors, and excerpts.""",
         "parameters": {
             "type": "object",
@@ -435,11 +437,14 @@ word_count_result = registry.execute(
                 "excerpt": "The flan collection: designing data and methods for effective i...",
             },
             {
-                "title": "MIND: Multi-agent inference for negotiation dialogue in travel planning",
+                "title": "MIND: Multi-agent inference for negotiation dialogue in travel \
+                      planning",
                 "arxiv_id": "2603.21696v1",
                 "authors": "Hunmin Do, Taejun Yoon, Kiyong Jung",
                 "year": 2026.0,
-                "excerpt": "Travelplanner: A benchmark for real-world planning with language agents. In Forty-first Internationa...",
+                "excerpt": "Travelplanner: A benchmark for real-world planning with \
+                    language agents. \
+                    In Forty-first Internationa...",
             },
         ]
     },

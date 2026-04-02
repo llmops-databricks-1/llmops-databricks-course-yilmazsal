@@ -16,8 +16,12 @@
 
 # COMMAND ----------
 from pyspark.sql import SparkSession
-
 from llmops_databricks.config import ProjectConfig, get_env
+import json
+from databricks.sdk import WorkspaceClient
+from databricks.sdk.service import sql
+from databricks.sdk.service.sql import CreateWarehouseRequestWarehouseType
+from loguru import logger
 
 spark = SparkSession.builder.getOrCreate()
 
@@ -37,13 +41,6 @@ schema = cfg.schema
 # MAGIC First, check if we already have a Genie space configured.
 
 # COMMAND ----------
-
-import json
-
-from databricks.sdk import WorkspaceClient
-from databricks.sdk.service import sql
-from databricks.sdk.service.sql import CreateWarehouseRequestWarehouseType
-from loguru import logger
 
 w = WorkspaceClient()
 
