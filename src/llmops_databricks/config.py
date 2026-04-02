@@ -1,35 +1,7 @@
 import yaml
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-from databricks.connect import DatabricksSession
-<<<<<<< HEAD
-<<<<<<< HEAD
-from databricks.sdk.runtime import DBUtils
->>>>>>> d4334e6 (fixed formatting)
-=======
-from pyspark.dbutils import DBUtils
->>>>>>> b710dad (fixed format)
 from pydantic import BaseModel, Field
 from pyspark.dbutils import DBUtils
 from pyspark.sql import SparkSession
-=======
-from databricks.connect import DatabricksSession
-<<<<<<< HEAD
->>>>>>> 53e86ae (created chunks, vector search endpoint, index table  and search functions)
-=======
-from pydantic import BaseModel, Field
->>>>>>> d486143 (fixed formatting)
-=======
-from pydantic import BaseModel, Field
-from pyspark.dbutils import DBUtils
->>>>>>> 37dde7c (fixed format)
-=======
-from databricks.connect import DatabricksSession
-from pydantic import BaseModel, Field
-from pyspark.dbutils import DBUtils
->>>>>>> 37dde7ce6e693a3cc7924d1ecbab61408ec235b7
 
 
 class ProjectConfig(BaseModel):
