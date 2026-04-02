@@ -83,7 +83,8 @@ ignore = [
     "ERA001", # commented out code
     "ANN204",
     "ANN102",
-    "ANN101"
+    "ANN101",
+    "ANN401",
 ]
 
 [tool.ruff.format]
