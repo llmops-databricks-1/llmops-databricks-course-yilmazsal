@@ -22,6 +22,7 @@ from google.protobuf.duration_pb2 import Duration
 from loguru import logger
 
 from llmops_databricks.config import ProjectConfig
+from llmops_databricks.memory import LakebaseMemory
 
 cfg = ProjectConfig.from_yaml("../project_config.yml")
 
@@ -125,7 +126,6 @@ with psycopg.connect(conn_string) as conn:
 
 # COMMAND ----------
 
-from llmops_databricks.memory import LakebaseMemory
 
 memory = LakebaseMemory(
     project_id=project_id,

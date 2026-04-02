@@ -18,6 +18,7 @@ import nest_asyncio
 from databricks.sdk import WorkspaceClient
 from databricks_mcp import DatabricksMCPClient
 from loguru import logger
+from openai import OpenAI
 from pyspark.sql import SparkSession
 
 from llmops_databricks.config import ProjectConfig, get_env
@@ -358,8 +359,6 @@ test_mcp_connection(vector_search_mcp_url)
 
 # COMMAND ----------
 
-from openai import OpenAI
-
 
 class SimpleAgent:
     """A simple agent that can call tools in a loop."""
@@ -448,7 +447,8 @@ class SimpleAgent:
 # Create agent with MCP tools
 agent = SimpleAgent(
     llm_endpoint=cfg.llm_endpoint,
-    system_prompt="You are a helpful research assistant. Use the available tools to search for papers and answer questions.",
+    system_prompt="You are a helpful research assistant. Use the available tools to search "
+    "for papers and answer questions.",
     tools=mcp_tools,
 )
 

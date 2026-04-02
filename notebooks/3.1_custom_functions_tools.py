@@ -250,7 +250,8 @@ search_papers_tool_spec = {
     "type": "function",
     "function": {
         "name": "search_papers",
-        "description": "Search for academic papers using semantic search. Returns relevant papers with titles, authors, and excerpts.",
+        "description": """Search for academic papers using semantic search. Returns relevant
+                   papers with titles, authors, and excerpts.""",
         "parameters": {
             "type": "object",
             "properties": {
