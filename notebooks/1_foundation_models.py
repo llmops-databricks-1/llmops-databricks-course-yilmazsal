@@ -8,7 +8,6 @@ import openai
 from databricks.sdk import WorkspaceClient
 from loguru import logger
 
-
 # COMMAND ----------
 
 # COMMAND ----------
@@ -30,20 +29,8 @@ for endpoint in endpoints:
         logger.info("-" * 80)
 
 
-
-
-
-
-
-
-
 # COMMAND ----------
 
-
-import json
-import subprocess
-
-import openai
 
 host = w.config.host
 
@@ -92,4 +79,3 @@ for result in search.results():
     print(result.published)
     print("-" * 50)
 # COMMAND ----------
-
