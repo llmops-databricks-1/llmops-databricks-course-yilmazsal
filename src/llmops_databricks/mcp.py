@@ -1,11 +1,12 @@
 """MCP (Model Context Protocol) integration utilities."""
 
 from collections.abc import Callable
+from typing import Any
 
 from databricks.sdk import WorkspaceClient
 from databricks_mcp import DatabricksMCPClient
 from pydantic import BaseModel
-from typing import Any
+
 
 class ToolInfo(BaseModel):
     """Tool information for agent integration.
