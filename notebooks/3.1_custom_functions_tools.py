@@ -51,6 +51,7 @@ from typing import Any
 from databricks.sdk import WorkspaceClient
 from databricks.vector_search.client import VectorSearchClient
 from loguru import logger
+from openai import OpenAI
 from pyspark.sql import SparkSession
 
 from llmops_databricks.config import ProjectConfig, get_env
@@ -645,7 +646,6 @@ class SimpleAgent:
 
 # COMMAND ----------
 
-from openai import OpenAI
 
 # Create agent with our tools
 agent = SimpleAgent(
