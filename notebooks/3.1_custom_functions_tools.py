@@ -183,7 +183,7 @@ def parse_vector_search_results(results):
     columns = [col["name"] for col in results.get("manifest", {}).get("columns", [])]
     data_array = results.get("result", {}).get("data_array", [])
 
-    return [dict(zip(columns, row_data)) for row_data in data_array]
+    return [dict(zip(columns, row_data, strict=False)) for row_data in data_array]
 
 
 # COMMAND ----------
@@ -513,7 +513,7 @@ logger.info(f"word counting result:\n{word_count_result}")
 # COMMAND ----------
 
 
-def test_tool(tool_name: str, test_cases: list[dict]):
+def test_tool(tool_name: str, test_cases: list[dict]) -> None:
     """Test a tool with multiple test cases."""
     logger.info(f"Testing tool: {tool_name}")
     logger.info("=" * 80)
@@ -579,7 +579,7 @@ class SimpleAgent:
             {"role": "user", "content": user_message},
         ]
 
-        for iteration in range(max_iterations):
+        for _iteration in range(max_iterations):
             # Call LLM
             response = self._client.chat.completions.create(
                 model=self.llm_endpoint,
@@ -654,7 +654,7 @@ agent = SimpleAgent(
 # tools=registry.get_all_tools())
 
 logger.info("✓ Agent created with tools:")
-for tool_name in agent._tools_dict.keys():
+for tool_name in agent._tools_dict:
     logger.info(f"  - {tool_name}")
 
 # COMMAND ----------
