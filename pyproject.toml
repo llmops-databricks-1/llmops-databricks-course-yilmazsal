@@ -1,5 +1,5 @@
 [project]
-name = "llmops-databricks-course-yilmazsal"
+name = "llmops_databricks"
 dynamic = ["version"]
 description = "llmops-databricks-course-yilmazsal - LLMOps Course on Databricks"
 requires-python = ">=3.12, <3.13"
@@ -23,7 +23,8 @@ dependencies = [
     "databricks-agents==1.8.2",
     "psycopg==3.3.2",
     "psycopg-pool==3.3.0",
-    "psycopg[binary]==3.3.2"
+    "psycopg[binary]==3.3.2",
+    "azure-ai-documentintelligence==1.0.2"
 ]
 
 [project.optional-dependencies]
@@ -48,7 +49,7 @@ build-backend = "setuptools.build_meta"
 
 [tool.setuptools.packages.find]
 where = ["src"]
-include = ["your_custom_package*"]
+include = ["llmops_databricks*"]
 
 [tool.setuptools.dynamic]
 version = { file = "version.txt" }
