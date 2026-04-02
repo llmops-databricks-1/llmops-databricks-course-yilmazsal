@@ -34,8 +34,8 @@ for endpoint in endpoints:
 
 =======
         logger.info("-"*80)
-        
-        
+
+
 >>>>>>> 53e86ae (created chunks, vector search endpoint, index table  and search functions)
 # COMMAND ----------
 
@@ -93,7 +93,7 @@ logger.info(f"Tokens outpout: {response.usage.completion_tokens}")
 <<<<<<< HEAD
 #
 =======
-# 
+#
 =======
 #
 >>>>>>> d486143 (fixed formatting)
