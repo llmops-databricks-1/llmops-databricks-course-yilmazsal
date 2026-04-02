@@ -1,4 +1,5 @@
 import yaml
+from databricks.connect import DatabricksSession
 from pydantic import BaseModel, Field
 from pyspark.dbutils import DBUtils
 
