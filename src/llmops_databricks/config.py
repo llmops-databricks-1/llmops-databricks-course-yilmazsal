@@ -1,7 +1,6 @@
 import yaml
 from pydantic import BaseModel, Field
 from pyspark.dbutils import DBUtils
-from pyspark.sql import SparkSession
 
 
 class ProjectConfig(BaseModel):
