@@ -1,6 +1,12 @@
 dev:
-  catalog: gdas_dev_iaud
-  schema: policies
-  llm_endpoints: azure-openai
-  embedding_endpoint: databricks-gte-large-on
+  catalog: mlops_dev
+  schema: yilmazfs
+  volume: arxiv_files
+  llm_endpoint: databricks-llama-4-maverick
+  embedding_endpoint: databricks-gte-large-en
   vector_search_endpoint: llmops_course_vs_endpoint
+  warehouse_id: 7077f4cb0e616c62
+  genie_space_id: 01f12e7832b910d79b82d1d82a612ac7
+  usage_policy_id: ba7efd29-3744-452a-8044-13c8abb3cfe7
+  lakebase_project_id: arxiv-simple-agent-lakebase
+  experiment_name: /Shared/arxiv-curator-course
