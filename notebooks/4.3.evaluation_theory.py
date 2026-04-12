@@ -24,7 +24,6 @@ from pyspark.sql import SparkSession
 from llmops_databricks.config import ProjectConfig, get_env
 from llmops_databricks.evaluation import (
     polite_tone_guideline,
-    word_count_check,
 )
 
 # COMMAND ----------
