@@ -3,7 +3,6 @@ import json
 import os
 import warnings
 from collections.abc import Generator
-from datetime import datetime
 from typing import Any
 from uuid import uuid4
 
@@ -12,16 +11,7 @@ import mlflow
 import nest_asyncio
 import openai
 from databricks.sdk import WorkspaceClient
-from loguru import logger
-from mlflow import MlflowClient
 from mlflow.entities import SpanType
-from mlflow.models.resources import (
-    DatabricksGenieSpace,
-    DatabricksServingEndpoint,
-    DatabricksSQLWarehouse,
-    DatabricksTable,
-    DatabricksVectorSearchIndex,
-)
 from mlflow.pyfunc import ResponsesAgent
 from mlflow.types.responses import (
     ResponsesAgentRequest,
@@ -31,19 +21,19 @@ from mlflow.types.responses import (
     to_chat_completions_input,
 )
 
-from llmops_databricks.config import ProjectConfig
 from llmops_databricks.mcp import create_mcp_tools
 from llmops_databricks.memory import LakebaseMemory
 
+
 class ArxivAgent(ResponsesAgent):
     def __init__(
-            self,
-            llm_endpoint: str,
-            system_prompt: str,
-            catalog: str,
-            schema: str,
-            genie_space_id: str | None = None,
-            lakebase_project_id: str | None = None,
+        self,
+        llm_endpoint: str,
+        system_prompt: str,
+        catalog: str,
+        schema: str,
+        genie_space_id: str | None = None,
+        lakebase_project_id: str | None = None,
     ):
         """Initialize the Arxiv Agent."""
         nest_asyncio.apply()
@@ -52,35 +42,37 @@ class ArxivAgent(ResponsesAgent):
         self.workspace_client = WorkspaceClient()
         self.model_serving_client = (
             self.workspace_client.serving_endpoints.get_open_ai_client()
-            )
-        
-        #initialize Lakebase memory if configured
+        )
+
+        # initialize Lakebase memory if configured
         self.memory: LakebaseMemory | None = None
         if lakebase_project_id:
             self.memory = LakebaseMemory(
                 project_id=lakebase_project_id,
             )
 
-                # Create tools from config
+            # Create tools from config
         host = self.workspace_client.config.host
-        tools = asyncio.run(create_mcp_tools(
-            w=self.workspace_client,
-            url_list=[
-                f"{host}/api/2.0/mcp/vector-search/{catalog}/{schema}",
-                f"{host}/api/2.0/mcp/genie/{genie_space_id}",
-            ],
-        ))
+        tools = asyncio.run(
+            create_mcp_tools(
+                w=self.workspace_client,
+                url_list=[
+                    f"{host}/api/2.0/mcp/vector-search/{catalog}/{schema}",
+                    f"{host}/api/2.0/mcp/genie/{genie_space_id}",
+                ],
+            )
+        )
         self._tools_dict = {tool.name: tool for tool in tools}
-    
+
     def get_tool_specs(self) -> list[dict]:
         """Returns tool specifications in the format OpenAI expects."""
         return [tool_info.spec for tool_info in self._tools_dict.values()]
-    
+
     @mlflow.trace(span_type=SpanType.TOOL)
     def execute_tool(self, tool_name: str, args: dict) -> Any:
         """Executes the specified tool with the given arguments."""
         return self._tools_dict[tool_name].exec_fn(**args)
-    
+
     @backoff.on_exception(backoff.expo, openai.RateLimitError)
     def call_llm(
         self,
@@ -92,7 +84,7 @@ class ArxivAgent(ResponsesAgent):
             )
         stream = self.model_serving_client.chat.completions.create(
             model=self.llm_endpoint,
-            messages=to_chat_completions_input(messages), 
+            messages=to_chat_completions_input(messages),
             tools=self.get_tool_specs(),
             stream=True,
         )
@@ -104,9 +96,9 @@ class ArxivAgent(ResponsesAgent):
                 last_chunk = chunk_dict
                 yield chunk_dict
             llm_request_id = stream.response.headers.get("x-request-id")
-            
+
             for item in messages:
-                if item.get('role',"")=="user":
+                if item.get("role", "") == "user":
                     user_message = item.get("content")
             span.set_inputs({"user_message": user_message})
             outputs: dict[str, Any] = {
@@ -134,7 +126,7 @@ class ArxivAgent(ResponsesAgent):
         return ResponsesAgentStreamEvent(
             type="response.output_item.done", item=tool_call_output
         )
-    
+
     @mlflow.trace(span_type=SpanType.RETRIEVER, name="memory_load")
     def load_memory(self, session_id: str) -> list[dict[str, Any]]:
         """Load previous messages from Lakebase memory."""
@@ -143,14 +135,13 @@ class ArxivAgent(ResponsesAgent):
         return []
 
     @mlflow.trace(span_type=SpanType.CHAIN, name="memory_save")
-    def save_memory(
-        self, session_id: str, messages: list[dict[str, Any]]
-    ) -> None:
+    def save_memory(self, session_id: str, messages: list[dict[str, Any]]) -> None:
         """Save new messages to Lakebase memory."""
         self.memory.save_messages(session_id, messages)
 
     def _extract_output_items(
-        self, events: list[ResponsesAgentStreamEvent],
+        self,
+        events: list[ResponsesAgentStreamEvent],
     ) -> list[dict[str, Any]]:
         """Extract and serialize output items from stream events."""
         items = []
@@ -161,7 +152,7 @@ class ArxivAgent(ResponsesAgent):
             if item.get("type") == "message":
                 items.append(item)
         return items
-    
+
     def _run_tool_loop(
         self,
         messages: list[dict[str, Any]],
@@ -193,7 +184,7 @@ class ArxivAgent(ResponsesAgent):
                 ),
             )
         return events
-    
+
     @mlflow.trace(span_type=SpanType.CHAIN)
     def call_and_run_tools(
         self,
@@ -213,11 +204,11 @@ class ArxivAgent(ResponsesAgent):
             tags={
                 "git_sha": os.getenv("GIT_SHA", "local"),
                 "model_serving_endpoint_name": os.getenv(
-                    "MODEL_SERVING_ENDPOINT_NAME", "local"),
+                    "MODEL_SERVING_ENDPOINT_NAME", "local"
+                ),
                 "model_version": os.getenv("MODEL_VERSION", "local"),
             },
-            metadata=(
-                {"mlflow.trace.session": session_id} if session_id else {}),
+            metadata=({"mlflow.trace.session": session_id} if session_id else {}),
             client_request_id=request_id,
         )
 
@@ -229,13 +220,13 @@ class ArxivAgent(ResponsesAgent):
                 request_input + self._extract_output_items(events),
             )
         return events
-    
+
     def predict(self, request: ResponsesAgentRequest) -> ResponsesAgentResponse:
         events = list(self.predict_stream(request))
         return ResponsesAgentResponse(
             output=self._extract_output_items(events),
             custom_outputs=request.custom_inputs,
-    )
+        )
 
     @mlflow.trace(span_type=SpanType.AGENT)
     def predict_stream(
@@ -246,8 +237,7 @@ class ArxivAgent(ResponsesAgent):
         request_id = custom.get("request_id")
 
         previous_messages = (
-            self.load_memory(session_id)
-            if session_id and self.memory else []
+            self.load_memory(session_id) if session_id and self.memory else []
         )
 
         request_input = [i.model_dump() for i in request.input]

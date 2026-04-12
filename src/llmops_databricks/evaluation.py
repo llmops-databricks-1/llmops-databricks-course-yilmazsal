@@ -35,7 +35,9 @@ hook_in_post_guideline = Guidelines(
 )
 
 
-def evaluate_agent(cfg: ProjectConfig, eval_inputs_path: str) -> mlflow.models.EvaluationResult:
+def evaluate_agent(
+    cfg: ProjectConfig, eval_inputs_path: str
+) -> mlflow.models.EvaluationResult:
     """Run evaluation on the agent.
 
     Args:
