@@ -292,9 +292,7 @@ def counting_words(results: list[dict]) -> int:
     Returns:
         Total number of words in the results."""
     return sum(
-        len(str(key).split()) + len(str(value).split())
-        for r in results
-        for key, value in r.items()
+        len(str(key).split()) + len(str(value).split()) for r in results for key, value in r.items()
     )
 
 
@@ -339,9 +337,7 @@ logger.info(json.dumps(counting_words_tool_spec, indent=2))
 # This class represents a tool with name, spec, and execution function
 
 # Create tool info objects
-calculator_tool = ToolInfo(
-    name="calculator", spec=calculator_tool_spec, exec_fn=calculator
-)
+calculator_tool = ToolInfo(name="calculator", spec=calculator_tool_spec, exec_fn=calculator)
 
 search_papers_tool = ToolInfo(
     name="search_papers", spec=search_papers_tool_spec, exec_fn=search_papers
@@ -420,9 +416,7 @@ calc_result = registry.execute("calculator", {"operation": "add", "a": 10, "b": 
 logger.info(f"Calculator result: {calc_result}")
 
 # Execute search tool
-search_result = registry.execute(
-    "search_papers", {"query": "neural networks", "num_results": 3}
-)
+search_result = registry.execute("search_papers", {"query": "neural networks", "num_results": 3})
 logger.info(f"Search result:\n{search_result}")
 
 

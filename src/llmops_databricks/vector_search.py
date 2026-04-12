@@ -31,9 +31,7 @@ class VectorSearchManager:
     def create_endpoint_if_not_exists(self) -> None:
         endpoints_response = self.client.list_endpoints()
         endpoints = (
-            endpoints_response.get("endpoints", [])
-            if isinstance(endpoints_response, dict)
-            else []
+            endpoints_response.get("endpoints", []) if isinstance(endpoints_response, dict) else []
         )
         endpoints_exists = any(
             (ep.get("name") if isinstance(ep, dict) else getattr(ep, "name", None))
@@ -94,9 +92,7 @@ class VectorSearchManager:
         index.sync()
         logger.info("Index sync triggered")
 
-    def search(
-        self, query: str, num_results: int = 5, filters: dict | None = None
-    ) -> dict:
+    def search(self, query: str, num_results: int = 5, filters: dict | None = None) -> dict:
         """Search the vector index.
 
         Args:

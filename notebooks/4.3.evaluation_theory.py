@@ -335,9 +335,7 @@ comprehensive_test_data = [
 ]
 
 # Evaluate with all scorers
-comprehensive_results = mlflow.genai.evaluate(
-    data=comprehensive_test_data, scorers=all_scorers
-)
+comprehensive_results = mlflow.genai.evaluate(data=comprehensive_test_data, scorers=all_scorers)
 
 logger.info("Comprehensive Evaluation Results:")
 logger.info("=" * 80)

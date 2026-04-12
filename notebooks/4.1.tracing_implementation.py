@@ -215,9 +215,7 @@ logger.info(f"  Git SHA: {git_sha}")
 
 # Search traces by git_sha
 # Note: search_traces returns a DataFrame
-traces_df = mlflow.search_traces(
-    filter_string=f"tags.git_sha = '{git_sha}'", max_results=5
-)
+traces_df = mlflow.search_traces(filter_string=f"tags.git_sha = '{git_sha}'", max_results=5)
 
 logger.info(f"Found {len(traces_df)} traces with git_sha={git_sha}")
 

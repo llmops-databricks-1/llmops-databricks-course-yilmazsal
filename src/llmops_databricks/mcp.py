@@ -25,9 +25,7 @@ class ToolInfo(BaseModel):
         arbitrary_types_allowed = True
 
 
-def create_managed_exec_fn(
-    server_url: str, tool_name: str, w: WorkspaceClient
-) -> Callable:
+def create_managed_exec_fn(server_url: str, tool_name: str, w: WorkspaceClient) -> Callable:
     """Create an execution function for an MCP tool.
 
     Args:

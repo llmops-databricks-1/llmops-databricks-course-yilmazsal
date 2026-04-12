@@ -105,8 +105,7 @@ class LakebaseMemory:
             with self._get_pool().connection() as conn:
                 for msg in messages:
                     conn.execute(
-                        "INSERT INTO session_messages (session_id, message_data) "
-                        "VALUES (%s, %s)",
+                        "INSERT INTO session_messages (session_id, message_data) VALUES (%s, %s)",
                         (session_id, json.dumps(msg)),
                     )
         except psycopg.OperationalError:

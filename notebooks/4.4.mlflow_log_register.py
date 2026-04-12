@@ -60,9 +60,7 @@ results = mlflow.genai.evaluate(
 resources = [
     DatabricksServingEndpoint(endpoint_name=cfg.llm_endpoint),
     DatabricksGenieSpace(genie_space_id=cfg.genie_space_id),
-    DatabricksVectorSearchIndex(
-        index_name=f"{cfg.catalog}.{cfg.schema}.arxiv_vector_index"
-    ),
+    DatabricksVectorSearchIndex(index_name=f"{cfg.catalog}.{cfg.schema}.arxiv_vector_index"),
     DatabricksTable(table_name=f"{cfg.catalog}.{cfg.schema}.arxiv_papers"),
     DatabricksSQLWarehouse(warehouse_id=cfg.warehouse_id),
     DatabricksServingEndpoint(endpoint_name="databricks-bge-large-en"),
@@ -74,9 +72,7 @@ session_id = f"s-{timestamp}-{random.randint(100000, 999999)}"
 request_id = f"req-{timestamp}-{random.randint(100000, 999999)}"
 
 test_request = {
-    "input": [
-        {"role": "user", "content": "What are recent papers about LLMs and reasoning?"}
-    ],
+    "input": [{"role": "user", "content": "What are recent papers about LLMs and reasoning?"}],
     "custom_inputs": {
         "session_id": session_id,
         "request_id": request_id,

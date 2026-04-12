@@ -65,8 +65,7 @@ user = w.current_user.me()
 pg_credential = pg_api.generate_database_credential(endpoint=endpoint.name)
 username = urllib.parse.quote_plus(user.user_name)
 conn_string = (
-    f"postgresql://{username}:{pg_credential.token}@{host}:5432/"
-    "databricks_postgres?sslmode=require"
+    f"postgresql://{username}:{pg_credential.token}@{host}:5432/databricks_postgres?sslmode=require"
 )
 
 
