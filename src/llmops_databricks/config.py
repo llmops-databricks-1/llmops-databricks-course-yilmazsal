@@ -7,23 +7,21 @@ from pyspark.dbutils import DBUtils
 class ProjectConfig(BaseModel):
     """Load project configuration from YAML."""
 
-    catalog: str = Field(
-        ..., description="Name of the catalog to use for this environment"
-    )
+    catalog: str = Field(..., description="Name of the catalog to use for this environment")
     schema: str = Field(..., description="Name of the schema associated with the catalog")
     volume: str = Field(..., description="Name of the Volume associated with the catalog")
     llm_endpoint: str = Field(..., description="Endpoint identifier for the LLM service")
     embedding_endpoint: str = Field(..., description="Endpoint for embedding generation")
-    vector_search_endpoint: str = Field(
-        ..., description="Endpoint for vector search service"
-    )
+    vector_search_endpoint: str = Field(..., description="Endpoint for vector search service")
     warehouse_id: str = Field(..., description="Warehouse ID")
-    genie_space_id: str | None = Field(
-        None, description="Genie space ID for MCP integration"
-    )
+    genie_space_id: str | None = Field(None, description="Genie space ID for MCP integration")
     usage_policy_id: str | None = Field(..., description="Usage policy id")
     lakebase_project_id: str = Field(..., description="Lakebase project id")
     experiment_name: str = Field(None, description="Experiment name")
+    system_prompt: str = Field(
+        default="You are a helpful AI assistant that helps users find and understand research papers.",
+        description="System prompt for the agent",
+    )
 
     @classmethod
     def from_yaml(cls, config_path: str, env: str = "dev") -> "ProjectConfig":

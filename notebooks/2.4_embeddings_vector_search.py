@@ -420,9 +420,7 @@ query = "attention mechanisms in transformers"
 logger.info(f"Query: {query}\n")
 
 # Strategy 1: Basic semantic search
-results_basic = index.similarity_search(
-    query_text=query, columns=["text", "title"], num_results=3
-)
+results_basic = index.similarity_search(query_text=query, columns=["text", "title"], num_results=3)
 
 logger.info("Strategy 1: Basic Semantic Search")
 logger.info("-" * 80)

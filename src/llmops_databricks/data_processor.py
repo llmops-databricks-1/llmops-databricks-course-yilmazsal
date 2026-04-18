@@ -59,9 +59,7 @@ class DataProcessor:
         self.end = time.strftime("%Y%m%d%H%M", time.gmtime(time.time()))
         self.end_date = time.strftime("%Y%m%d", time.gmtime(time.time()))
 
-        self.pdf_dir = (
-            f"/Volumes/{self.catalog}/{self.schema}/{self.volume}/{self.end_date}"
-        )
+        self.pdf_dir = f"/Volumes/{self.catalog}/{self.schema}/{self.volume}/{self.end_date}"
         os.makedirs(self.pdf_dir, exist_ok=True)
 
         self.papers_table = f"{self.catalog}.{self.schema}.arxiv_papers"
@@ -86,9 +84,7 @@ class DataProcessor:
             logger.info(f"Found existing arxiv_papers table. Starting from: {start}")
         else:
             start = time.strftime("%Y%m%d%H%M", time.gmtime(time.time() - 24 * 3600 * 3))
-            logger.info(
-                f"No existing arxiv_papers table. Starting from 3 days ago: {start}"
-            )
+            logger.info(f"No existing arxiv_papers table. Starting from 3 days ago: {start}")
         return start
 
     def download_and_store_papers(self) -> list[dict] | None:
@@ -102,9 +98,7 @@ class DataProcessor:
 
         start = self._get_range_start()
         client = arxiv.Client()
-        search = arxiv.Search(
-            query=f"cat:cs.AI AND submittedDate:[{start} TO {self.end}]"
-        )
+        search = arxiv.Search(query=f"cat:cs.AI AND submittedDate:[{start} TO {self.end}]")
         papers = client.results(search)
 
         records = []  # collects metadata
@@ -270,10 +264,7 @@ class DataProcessor:
         Process parsed documents to extract and clean chunks.
         Reads from ai_parsed_docs table and saves to arxiv_chunks table.
         """
-        logger.info(
-            f"Processing parsed documents from "
-            f"{self.parsed_table} for end date {self.end}"
-        )
+        logger.info(f"Processing parsed documents from {self.parsed_table} for end date {self.end}")
 
         df = self.spark.table(self.parsed_table).where(f"processed = {self.end}")
 
