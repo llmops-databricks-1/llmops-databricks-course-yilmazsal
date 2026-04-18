@@ -22,7 +22,7 @@ from loguru import logger
 from mlflow import MlflowClient
 
 from llmops_databricks.config import ProjectConfig
-
+from databricks.sdk.runtime import dbutils
 # Setup MLflow tracking
 if "DATABRICKS_RUNTIME_VERSION" not in os.environ:
     from dotenv import load_dotenv
