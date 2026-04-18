@@ -3,6 +3,7 @@ import json
 import os
 import warnings
 from collections.abc import Generator
+from datetime import datetime
 from typing import Any
 from uuid import uuid4
 
@@ -11,7 +12,16 @@ import mlflow
 import nest_asyncio
 import openai
 from databricks.sdk import WorkspaceClient
+from loguru import logger
+from mlflow import MlflowClient
 from mlflow.entities import SpanType
+from mlflow.models.resources import (
+    DatabricksGenieSpace,
+    DatabricksServingEndpoint,
+    DatabricksSQLWarehouse,
+    DatabricksTable,
+    DatabricksVectorSearchIndex,
+)
 from mlflow.pyfunc import ResponsesAgent
 from mlflow.types.responses import (
     ResponsesAgentRequest,
@@ -21,18 +31,10 @@ from mlflow.types.responses import (
     to_chat_completions_input,
 )
 
+from llmops_databricks.config import ProjectConfig
 from llmops_databricks.mcp import create_mcp_tools
 from llmops_databricks.memory import LakebaseMemory
-from mlflow.models.resources import (
-    DatabricksVectorSearchIndex,
-    DatabricksServingEndpoint,
-    DatabricksSQLWarehouse,
-    DatabricksTable,
-    DatabricksGenieSpace)
-from loguru import logger
-from llmops_databricks.config import ProjectConfig
-from datetime import datetime
-from mlflow import MlflowClient
+
 
 class ArxivAgent(ResponsesAgent):
     def __init__(
@@ -272,9 +274,7 @@ class ArxivAgent(ResponsesAgent):
         resources = [
             DatabricksServingEndpoint(endpoint_name=cfg.llm_endpoint),
             DatabricksGenieSpace(genie_space_id=cfg.genie_space_id),
-            DatabricksVectorSearchIndex(
-                index_name=f"{cfg.catalog}.{cfg.schema}.arxiv_index"
-            ),
+            DatabricksVectorSearchIndex(index_name=f"{cfg.catalog}.{cfg.schema}.arxiv_index"),
             DatabricksTable(table_name=f"{cfg.catalog}.{cfg.schema}.arxiv_papers"),
             DatabricksSQLWarehouse(warehouse_id=cfg.warehouse_id),
             DatabricksServingEndpoint(endpoint_name="databricks-bge-large-en"),
@@ -290,10 +290,9 @@ class ArxivAgent(ResponsesAgent):
         }
 
         test_request = {
-        "input": [
-            {"role": "user",
-            "content": "What are recent papers about LLMs and reasoning?"}
-        ]
+            "input": [
+                {"role": "user", "content": "What are recent papers about LLMs and reasoning?"}
+            ]
         }
 
         mlflow.set_experiment(cfg.experiment_path)
@@ -318,7 +317,7 @@ class ArxivAgent(ResponsesAgent):
             model_uri=model_info.model_uri,
             name=model_name,
             env_pack="databricks_model_serving",
-            tags={"git_sha": git_sha, "run_id": run_id}
+            tags={"git_sha": git_sha, "run_id": run_id},
         )
         logger.info(f"Registered version: {registered_model.version}")
 

@@ -36,7 +36,7 @@ logger.info(f"  Endpoint: {endpoint_name}")
 
 # Deploy agent to serving endpoint
 secret_scope = "dev_SPN"
-client_id = dbutils.secrets.get(secret_scope, "client_id") 
+client_id = dbutils.secrets.get(secret_scope, "client_id")
 client_secret = dbutils.secrets.get(secret_scope, "client_secret")
 agents.deploy(
     model_name=model_name,
