@@ -19,6 +19,7 @@ import urllib
 
 import requests
 from databricks.sdk import WorkspaceClient
+import 
 
 w = WorkspaceClient()
 
@@ -48,13 +49,13 @@ client_secret = secret_resp.json()["secret"]
 
 # COMMAND ----------
 # Step 2: Store credentials in a secret scope
-scope_name = "arxiv-agent-scope"
-try:
-    w.secrets.create_scope(scope=scope_name)
-except Exception:
-    pass  # scope already exists
-w.secrets.put_secret(scope=scope_name, key="client_id", string_value=client_id)
-w.secrets.put_secret(scope=scope_name, key="client_secret", string_value=client_secret)
+scope_name = "dev_SPN"
+# try:
+#     w.secrets.create_scope(scope=scope_name)
+# except Exception:
+#     pass  # scope already exists
+# w.secrets.put_secret(scope=scope_name, key="client_id", string_value=client_id)
+# w.secrets.put_secret(scope=scope_name, key="client_secret", string_value=client_secret)
 
 # COMMAND ----------
 # Step 3: Add SPN role to project
