@@ -34,3 +34,17 @@ dev:
   usage_policy_id: ba7efd29-3744-452a-8044-13c8abb3cfe7
   lakebase_project_id: arxiv-simple-agent-lakebase
   experiment_name: /Shared/llm-mlflow-demo
+
+
+acc:
+  catalog: llmops_dev
+  schema: arxiv
+  volume: arxiv_files
+  llm_endpoint: databricks-meta-llama-3-1-70b-instruct
+  embedding_endpoint: databricks-gte-large-en
+  warehouse_id: 96e26e80fcd91931
+  vector_search_endpoint: llmops_course_vs_endpoint
+  genie_space_id: 01f12e7832b910d79b82d1d82a612ac7
+  usage_policy_id: ba7efd29-3744-452a-8044-13c8abb3cfe7
+  lakebase_project_id: arxiv-simple-agent-lakebase
+  experiment_name: /Shared/llm-mlflow-demo
