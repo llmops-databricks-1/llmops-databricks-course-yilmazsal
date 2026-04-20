@@ -3,6 +3,7 @@ import json
 import os
 import warnings
 from collections.abc import Generator
+from datetime import datetime
 from typing import Any
 from uuid import uuid4
 
@@ -11,7 +12,16 @@ import mlflow
 import nest_asyncio
 import openai
 from databricks.sdk import WorkspaceClient
+from loguru import logger
+from mlflow import MlflowClient
 from mlflow.entities import SpanType
+from mlflow.models.resources import (
+    DatabricksGenieSpace,
+    DatabricksServingEndpoint,
+    DatabricksSQLWarehouse,
+    DatabricksTable,
+    DatabricksVectorSearchIndex,
+)
 from mlflow.pyfunc import ResponsesAgent
 from mlflow.types.responses import (
     ResponsesAgentRequest,
@@ -21,6 +31,7 @@ from mlflow.types.responses import (
     to_chat_completions_input,
 )
 
+from llmops_databricks.config import ProjectConfig
 from llmops_databricks.mcp import create_mcp_tools
 from llmops_databricks.memory import LakebaseMemory
 
@@ -237,87 +248,84 @@ class ArxivAgent(ResponsesAgent):
         )
         yield from events
 
-    # def log_register_agent(
-    #     cfg: ProjectConfig,
-    #     git_sha: str,
-    #     run_id: str,
-    #     agent_code_path: str,
-    #     model_name: str,
-    #     evaluation_metrics: dict | None = None,
-    # ) -> mlflow.entities.model_registry.RegisteredModel:
-    #     """
-    #     Log and register an MLflow agent model to Unity Catalog.
+    def log_register_agent(
+        cfg: ProjectConfig,
+        git_sha: str,
+        run_id: str,
+        agent_code_path: str,
+        model_name: str,
+        evaluation_metrics: dict | None = None,
+    ) -> mlflow.entities.model_registry.RegisteredModel:
+        """
+        Log and register an MLflow agent model to Unity Catalog.
 
-    #     Args:
-    #         cfg: Project configuration containing catalog, schema, and other settings.
-    #         git_sha: Git commit SHA for tracking.
-    #         run_id: Run identifier for tracking.
-    #         model_name: Model path in Unity Catalog.
-    #         agent_code_path: Path to the agent Python file.
-    #         evaluation_metrics: Optional evaluation metrics to log.
+        Args:
+            cfg: Project configuration containing catalog, schema, and other settings.
+            git_sha: Git commit SHA for tracking.
+            run_id: Run identifier for tracking.
+            model_name: Model path in Unity Catalog.
+            agent_code_path: Path to the agent Python file.
+            evaluation_metrics: Optional evaluation metrics to log.
 
-    #     Returns:
-    #         RegisteredModel object from Unity Catalog.
-    #     """
+        Returns:
+            RegisteredModel object from Unity Catalog.
+        """
 
-    #     resources = [
-    #         DatabricksServingEndpoint(endpoint_name=cfg.llm_endpoint),
-    #         DatabricksGenieSpace(genie_space_id=cfg.genie_space_id),
-    #         DatabricksVectorSearchIndex(
-    #             index_name=f"{cfg.catalog}.{cfg.schema}.arxiv_index"
-    #         ),
-    #         DatabricksTable(table_name=f"{cfg.catalog}.{cfg.schema}.arxiv_papers"),
-    #         DatabricksSQLWarehouse(warehouse_id=cfg.warehouse_id),
-    #         DatabricksServingEndpoint(endpoint_name="databricks-bge-large-en"),
-    #     ]
+        resources = [
+            DatabricksServingEndpoint(endpoint_name=cfg.llm_endpoint),
+            DatabricksGenieSpace(genie_space_id=cfg.genie_space_id),
+            DatabricksVectorSearchIndex(index_name=f"{cfg.catalog}.{cfg.schema}.arxiv_index"),
+            DatabricksTable(table_name=f"{cfg.catalog}.{cfg.schema}.arxiv_papers"),
+            DatabricksSQLWarehouse(warehouse_id=cfg.warehouse_id),
+            DatabricksServingEndpoint(endpoint_name="databricks-bge-large-en"),
+        ]
 
-    #     model_config = {
-    #         "catalog": cfg.catalog,
-    #         "schema": cfg.schema,
-    #         "genie_space_id": cfg.genie_space_id,
-    #         "system_prompt": cfg.system_prompt,
-    #         "llm_endpoint": cfg.llm_endpoint,
-    #         "lakebase_project_id": cfg.lakebase_project_id,
-    #     }
+        model_config = {
+            "catalog": cfg.catalog,
+            "schema": cfg.schema,
+            "genie_space_id": cfg.genie_space_id,
+            "system_prompt": cfg.system_prompt,
+            "llm_endpoint": cfg.llm_endpoint,
+            "lakebase_project_id": cfg.lakebase_project_id,
+        }
 
-    #     test_request = {
-    #     "input": [
-    #         {"role": "user",
-    #         "content": "What are recent papers about LLMs and reasoning?"}
-    #     ]
-    #     }
+        test_request = {
+            "input": [
+                {"role": "user", "content": "What are recent papers about LLMs and reasoning?"}
+            ]
+        }
 
-    #     mlflow.set_experiment(cfg.experiment_path)
-    #     ts = datetime.now().strftime("%Y-%m-%d")
+        mlflow.set_experiment(cfg.experiment_path)
+        ts = datetime.now().strftime("%Y-%m-%d")
 
-    #     with mlflow.start_run(
-    #         run_name=f"arxiv-mcp-agent-{ts}",
-    #         tags={"git_sha": git_sha, "run_id": run_id},
-    #     ):
-    #         model_info = mlflow.pyfunc.log_model(
-    #             name="agent",
-    #             python_model=agent_code_path,
-    #             resources=resources,
-    #             input_example=test_request,
-    #             model_config=model_config,
-    #         )
-    #         if evaluation_metrics:
-    #             mlflow.log_metrics(evaluation_metrics)
+        with mlflow.start_run(
+            run_name=f"arxiv-mcp-agent-{ts}",
+            tags={"git_sha": git_sha, "run_id": run_id},
+        ):
+            model_info = mlflow.pyfunc.log_model(
+                name="agent",
+                python_model=agent_code_path,
+                resources=resources,
+                input_example=test_request,
+                model_config=model_config,
+            )
+            if evaluation_metrics:
+                mlflow.log_metrics(evaluation_metrics)
 
-    #     logger.info(f"Registering model: {model_name}")
-    #     registered_model = mlflow.register_model(
-    #         model_uri=model_info.model_uri,
-    #         name=model_name,
-    #         env_pack="databricks_model_serving",
-    #         tags={"git_sha": git_sha, "run_id": run_id}
-    #     )
-    #     logger.info(f"Registered version: {registered_model.version}")
+        logger.info(f"Registering model: {model_name}")
+        registered_model = mlflow.register_model(
+            model_uri=model_info.model_uri,
+            name=model_name,
+            env_pack="databricks_model_serving",
+            tags={"git_sha": git_sha, "run_id": run_id},
+        )
+        logger.info(f"Registered version: {registered_model.version}")
 
-    #     client = MlflowClient()
-    #     logger.info("Setting alias 'latest-model'")
-    #     client.set_registered_model_alias(
-    #         name=model_name,
-    #         alias="latest-model",
-    #         version=registered_model.version,
-    #     )
-    #     return registered_model
+        client = MlflowClient()
+        logger.info("Setting alias 'latest-model'")
+        client.set_registered_model_alias(
+            name=model_name,
+            alias="latest-model",
+            version=registered_model.version,
+        )
+        return registered_model
